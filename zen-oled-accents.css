@@ -1,0 +1,161 @@
+/* Zen OLED Accents — https://github.com/tworekj/zen-oled-accents
+ * Pure black UI; the space color shows up in small doses (URL bar, space
+ * header, active space icon, divider, tree lines) so it's always clear which
+ * space you're in. MIT licensed.
+ */
+
+/* ── Base: pure black backgrounds ─────────────────────────────── */
+:root {
+  --zen-colors-tertiary:  #000000 !important;
+  --zen-colors-secondary: #060606 !important;
+  --zen-colors-border:    rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Sidebar and accent-colored elements — strip space color tint */
+#zen-sidebar-box,
+#zen-appcontent-navbar-container,
+#zen-appcontent-navbar-wrapper,
+#zen-browser-background,
+#zen-tabbox-wrapper {
+  background-color: #000000 !important;
+}
+
+/* Navigator toolbox children */
+#titlebar {
+  background-color: #000000 !important;
+}
+
+/* Popups and panels — pure black */
+:root {
+  --panel-background:            #000000 !important;
+  --zen-main-browser-background: #000000 !important;
+}
+
+/* Zen's gradient layers: black for the current space AND for the old one it
+   crossfades from on a space switch (otherwise the previous space's color
+   flashes), plus the toolbar variants. Beats Zen's inline values via !important. */
+.zen-browser-generic-background {
+  --zen-main-browser-background:              #000000 !important;
+  --zen-main-browser-background-old:          #000000 !important;
+  --zen-main-browser-background-toolbar:      #000000 !important;
+  --zen-main-browser-background-toolbar-old:  #000000 !important;
+}
+
+/* Window border — override the variable driving it directly on the element */
+#zen-browser-background {
+  --zen-main-browser-background: #000000 !important;
+}
+
+/* ── Window border — remove accent color ring ─────────────────── */
+#main-window {
+  outline:      none !important;
+  box-shadow:   none !important;
+  border-color: transparent !important;
+}
+
+#main-window::before,
+#main-window::after {
+  display: none !important;
+}
+
+/* ── URL bar: space color as tint ──────────────────────────────── */
+#urlbar .urlbar-background,
+#urlbar-background {
+  background-color: color-mix(
+    in srgb,
+    var(--zen-primary-color) 40%,
+    #000000
+  ) !important;
+}
+
+/* Focused URL bar — stronger tint + accent border */
+#urlbar[breakout-extend="true"] .urlbar-background {
+  background-color: color-mix(
+    in srgb,
+    var(--zen-primary-color) 55%,
+    #000000
+  ) !important;
+  border: 1px solid color-mix(
+    in srgb,
+    var(--zen-primary-color) 70%,
+    transparent
+  ) !important;
+}
+
+/* ── Tabs: accent on active tab only ───────────────────────────── */
+.tabbrowser-tab[selected] .tab-background,
+.tabbrowser-tab[multiselected] .tab-background {
+  background-color: color-mix(
+    in srgb,
+    var(--zen-primary-color) 20%,
+    #000000
+  ) !important;
+}
+
+/* ── Toolbar buttons: subtle accent on hover ───────────────────── */
+.toolbarbutton-1:hover,
+.zen-sidebar-action-button:hover {
+  background-color: color-mix(
+    in srgb,
+    var(--zen-primary-color) 20%,
+    #000000
+  ) !important;
+}
+
+/* ── Space accents ─────────────────────────────────────────────── */
+/* Every accent derives from the current space's color, so switching spaces
+   recolors all of them. Fills stay small; large areas stay #000. */
+:root {
+  --oled-accent:      var(--zen-primary-color);
+  --oled-accent-text: color-mix(in srgb, var(--zen-primary-color) 60%, #ffffff);
+  --oled-accent-fill: color-mix(in srgb, var(--zen-primary-color) 14%, #000000);
+  --oled-accent-line: color-mix(in srgb, var(--zen-primary-color) 55%, transparent);
+  --oled-accent-faint: color-mix(in srgb, var(--zen-primary-color) 22%, transparent);
+
+  /* Zen Tree Tabs (github.com/tworekj/zen-tree-tabs): indent guides in the
+     space color. Harmless without it. */
+  --ztt-guide-color: color-mix(in srgb, var(--zen-primary-color) 40%, transparent) !important;
+}
+
+/* Space header: bigger, bolder, in the space color. */
+.zen-current-workspace-indicator {
+  --zen-workspace-indicator-height: 54px;
+  font-size: 15px !important;
+
+  & .zen-current-workspace-indicator-name {
+    font-weight: 750 !important;
+    letter-spacing: 0.01em;
+    color: var(--oled-accent-text) !important;
+    text-shadow: 0 0 14px var(--oled-accent-faint);
+  }
+
+  & .zen-current-workspace-indicator-icon {
+    fill: var(--oled-accent-text) !important;
+    color: var(--oled-accent-text) !important;
+    scale: 1.15;
+  }
+}
+
+/* Hover: the faintest hint of the space color. */
+.tabbrowser-tab:hover:not([selected], [multiselected]) .tab-background {
+  background-color: var(--oled-accent-fill) !important;
+}
+
+/* Pinned / normal separator: a plain accent line. */
+.pinned-tabs-container-separator toolbarseparator {
+  background: var(--oled-accent-line) !important;
+}
+
+/* Essentials: hairline accent rings. */
+.tabbrowser-tab[zen-essential] .tab-background {
+  outline: 1px solid var(--oled-accent-faint) !important;
+  outline-offset: -1px;
+}
+
+/* Space switcher: the active space's icon in the space color, with the
+   same soft glow as the header name. */
+#zen-workspaces-button toolbarbutton[active="true"] .zen-workspace-icon {
+  fill: var(--oled-accent-text) !important;
+  color: var(--oled-accent-text) !important;
+  filter: drop-shadow(0 0 4px var(--oled-accent-line));
+}
